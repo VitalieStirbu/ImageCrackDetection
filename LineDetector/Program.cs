@@ -1,16 +1,29 @@
 ﻿using System;
+using System.IO;
 using OpenCvSharp;
 
 namespace LineDetector
 {
     class Program
     {
-        private const string imgPath = "...image path";
-        private const string path = "absolute path for output (C:/Desktop/)";
+        private const string INPUT_PATH = @"C:\Users\Vitalie\Desktop\Optar\Input";
+        private const string EDGEDETECTION_PATH = @"C:\Users\Vitalie\Desktop\Optar\EdgeDetection";
+        private const string LINEDETECTION_PATH = @"C:\Users\Vitalie\Desktop\Optar\LineDetection";
 
         static void Main(string[] args)
         {
-            Mat img = new Mat(imgPath, ImreadModes.AnyColor);
+            string[] fileArray = Directory.GetFiles(INPUT_PATH);
+            foreach (var fullPath in fileArray)
+            {
+                string fileName = Path.GetFileName(fullPath);
+                // LineEdgeDetection(fileName);
+                EdgeDetection(fileName);
+            }
+        }
+
+        public static void LineEdgeDetection(string fileName)
+        {
+            Mat img = new Mat(Path.Combine(INPUT_PATH, fileName), ImreadModes.AnyColor);
             Mat gray = new Mat();
 
             Cv2.CvtColor(img, gray, ColorConversionCodes.BGR2GRAY);
@@ -48,7 +61,17 @@ namespace LineDetector
 
             Cv2.AddWeighted(img, 0.8, line_image, 1, 0, line_edges);
 
-            Cv2.ImWrite(path + "result.png", line_edges);
+            Cv2.ImWrite(Path.Combine(LINEDETECTION_PATH, fileName), line_edges);
+        }
+
+        public static void EdgeDetection(string fileName)
+        {
+            Mat src = new Mat(Path.Combine(INPUT_PATH, fileName), ImreadModes.AnyColor);
+            Mat dst = new Mat();
+
+            Cv2.Canny(src, dst, 500, 600);
+
+            Cv2.ImWrite(Path.Combine(EDGEDETECTION_PATH, fileName), dst);
         }
     }
 }
