@@ -5,8 +5,8 @@ namespace LineDetector
 {
     class Program
     {
-        private const string imgPath = "C:/Users/Vitalie/Desktop/Work/Optar/CONCRETE RAW AND ANALYSIS IMAGES  01/0006-R.png";
-        private const string path = "C:/Users/Vitalie/Desktop/Work/Optar/";
+        private const string imgPath = "...image path";
+        private const string path = "absolute path for output (C:/Desktop/)";
 
         static void Main(string[] args)
         {
@@ -48,7 +48,7 @@ namespace LineDetector
 
             Cv2.AddWeighted(img, 0.8, line_image, 1, 0, line_edges);
 
-            Cv2.ImWrite(path + "line_parking.png", line_edges);
+            Cv2.ImWrite(path + "result.png", line_edges);
         }
     }
 }
